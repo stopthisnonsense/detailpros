@@ -11,5 +11,113 @@ License: GNU General Public License v2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 ======================================*/
 
-
 /*add your custom CSS below this line*/
+
+/* TDP Detailers Grid */
+
+.tdp-detailers {
+	display: grid;
+	grid-template-columns: repeat(1, 1fr);
+	grid-gap: 48px;
+}
+@media (min-width: 769px) {
+	.tdp-detailers {
+		grid-template-columns: repeat(2, 1fr);
+		grid-gap: 3%;
+	}
+}
+
+@media (min-width: 980px) {
+	.tdp-detailers {
+		grid-template-columns: repeat(4, 1fr);
+	}
+}
+
+.tdp-detailer {
+	padding: 24px 20px;
+	display: flex;
+	flex-direction: column;
+	border-radius: 8px;
+	box-shadow: 0px 0px 10px 0px rgb(251 240 231 / 25%);
+}
+
+.tdp-detailer__image img {
+	width: 100%;
+	margin-bottom: 20px;
+}
+
+.tdp-detailer__name {
+	font-size: 22px;
+	color: #fff;
+	font-family: 'Montserrat';
+	font-weight: 700;
+}
+
+.tdp-detailer__experience,
+.tdp-detailer__instagram {
+	margin-bottom: 1rem;
+}
+
+.tdp-detailer__excerpt h4,
+.tdp-detailer__experience h4 {
+	color: #fff;
+	font-size: 16px;
+	line-height: 1.3;
+	font-weight: 700;
+	font-family: 'Montserrat';
+	padding-bottom: 4px;
+}
+
+.tdp-detailer__excerpt p,
+.tdp-detailer__experience p {
+	color: #fff;
+	font-family: 'Montserrat';
+	font-size: 14px;
+	line-height: 1.6;
+}
+
+.tdp-detailer__instagram {
+	color: #fff;
+	font-size: 14px;
+	line-height: 1.6;
+	font-family: 'Montserrat';
+	display: flex;
+	align-items: center;
+}
+
+.tdp-detailer__instagram-mobile .tdp-detailer__instagram-link {
+	font-family: 'Roboto';
+	font-size: 15px;
+	border-radius: 4px;
+	width: 100%;
+	background-color: #f12742;
+	color: #fff;
+	text-transform: uppercase;
+	text-align: center;
+	display: block;
+	padding: 8px;
+	margin-top: 24px;
+}
+
+@media (min-width: 768px) {
+	.tdp-detailer__instagram-mobile {
+		display: none;
+	}
+}
+
+.tdp-detailer__icon {
+	margin-right: 12px;
+}
+
+.tdp-detailer--light {
+	background-color: #fff;
+}
+
+.tdp-detailer--light h4,
+.tdp-detailer--light .tdp-detailer__name {
+	color: #0f0e0e;
+}
+.tdp-detailer--light p,
+.tdp-detailer--light .tdp-detailer__instagram {
+	color: rgb(15 14 14 / 48%);
+}
