@@ -28,7 +28,7 @@ function tdp_pods( $atts ) {
         $post_id = get_the_ID();
         $tdp_classes = "tdp-detailers tdp-detailers--$post_id";
     }
-
+    // var_dump( $tdp_detailers );
     if( !isset( $tdp_detailers ) ) {
         return;
     }
@@ -90,7 +90,7 @@ function choose_detailers( $atts ) {
     ];
 
     $tdp_detailers = pods( 'detailer' , $params );
-
+    // var_dump( $tdp_detailers );
     $tdp_classes = "tdp-detailers";
 
     if( get_the_ID() ) {
@@ -104,11 +104,18 @@ function choose_detailers( $atts ) {
     // var_dump( $tdp_detailers );
     $template = "<div class='$tdp_classes'>";
     while( $tdp_detailers->fetch() ) {
-
         $tdp_name = $tdp_detailers->display( 'post_title' );
+        $tdp_slug = $tdp_detailers->display( 'post_name' );
+        $tdp_slug_sanitized = esc_attr( $tdp_slug );
         $tdp_name_sanitized = esc_attr($tdp_name);
         $tdp_id = $tdp_detailers->display( 'ID' );
         $tdp_id_sanitized = $tdp_id;
+
+        $tdp_form = $tdp_detailers->display( 'detailer_appointment_form' );
+        if( !isset($tdp_form) ) {
+            $tdp_form = "[ssa_booking type='$tdp_slug_sanitized']";
+        }
+
         $tdp_instagram = $tdp_detailers->display( 'instagram' );
         $tdp_instagram_image = get_stylesheet_directory_uri() . '/images/instagram-icon.png';
         $tdp_image = get_the_post_thumbnail( $tdp_id );
@@ -128,7 +135,7 @@ function choose_detailers( $atts ) {
 
         $tdp_instagram_template = "<a href='https://www.instagram.com/$tdp_instagram' target='blank' class='tdp-detailer__instagram tdp-detailer__instagram--$tdp_id'><img class='tdp-detailer__icon tdp-detailer__icon--instagram' src='$tdp_instagram_image'> @$tdp_instagram</a>";
 
-        $tdp_select_detailer = "<div class='tdp-detailer__select-detailer tdp-detailer__select-detailer--$tdp_id'><a class='tdp-detailer__select-detailer-link tdp-detailer__select-detailer-link--$tdp_id et_pb_button et_pb_button--bold' href='$detailer_permalink?$tdp_queries&tdp_detailer=$tdp_name_sanitized&tdp_detailer_id=$tdp_id'>Select Detailer</a></div>";
+        $tdp_select_detailer = "<div class='tdp-detailer__select-detailer tdp-detailer__select-detailer--$tdp_id'><a class='tdp-detailer__select-detailer-link tdp-detailer__select-detailer-link--$tdp_id et_pb_button et_pb_button--bold' href='$detailer_permalink?$tdp_queries&tdp_detailer=$tdp_id'>Select Detailer</a></div>";
 
         $tdp_experience_template = "<div class='tdp-detailer__experience tdp-detailer__experience--$tdp_id'>
             <h4>Experience</h4>
@@ -156,14 +163,60 @@ function choose_detailers( $atts ) {
 
 }
 
-function tdp_select_date_time() {
-    $query_strings = $_GET['car_type'];
-    $all_queries = $_SERVER['QUERY_STRING'];
-    if( $query_strings ) {
-        return do_shortcode( "[ssa_booking type=$query_strings]" );
-    }
+// function tdp_select_date_time() {
+//     $query_strings = $_GET['car_type'];
+//     $all_queries = $_SERVER['QUERY_STRING'];
+//     if( $query_strings ) {
+//         return do_shortcode( "[ssa_booking type=$query_strings]" );
+//     }
 
-    return do_shortcode( '[ssa_booking]' );
+//     return do_shortcode( '[ssa_booking]' );
+// }
+
+function date_picker_filter($params, $fields, $form ) {
+    if( $form->id == 9 ) {
+        // var_dump($fields);
+        if( $_GET['tdp_detailer'] ) {
+            $tdp_detailer = pods( 'detailer', $_GET['tdp_detailer'] );
+
+            $tdp_detail_params = [
+                'days' => ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'],
+                'items_to_iterate' => [ 'start_time', 'end_time' ]
+            ];
+
+            $tdp_detailer_availability= [];
+            foreach( $tdp_detail_params['days'] as $day ) {
+                if( $tdp_detailer->display( $day . '_availability' ) == 'Available'  ) {
+                    $tdp_start_time = $tdp_detailer->display( $day . '_start_time' );
+                    $tdp_end_time = $tdp_detailer->display( $day . '_end_time' );
+                    $time_constructor = [
+                        'day' => $day,
+                        'start_time' => $tdp_start_time,
+                        'end_time' => $tdp_end_time,
+                    ];
+                    $constructed_availability[] = $time_constructor;
+                }
+
+            }
+            var_dump( $constructed_availability );
+
+        }
+        foreach($fields as $field) {
+            if( $field->field_key == '25d7z' ) {
+                var_dump( $field );
+            }
+            if( $field->field_key == '4tpwh' ) {
+                var_dump( $field );
+            }
+        }
+        add_filter( 'frm_date_field_options', 'add_blackout_dates', 30, 2 );
+
+        function add_blackout_dates( $js_options, $fields ) {
+
+
+            return $js_options;
+        }
+    }
 }
 
 
@@ -175,3 +228,5 @@ add_shortcode( 'tdp_detailers', 'tdp_pods' );
 add_shortcode( 'select_date_time', 'tdp_select_date_time' );
 
 add_shortcode( 'select_detailers', 'choose_detailers' );
+
+add_action('frm_display_form_action', 'date_picker_filter', 8, 3);
