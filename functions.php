@@ -198,15 +198,15 @@ function date_picker_filter($params, $fields, $form ) {
                 }
 
             }
-            var_dump( $constructed_availability );
+            // var_dump( $constructed_availability );
 
         }
         foreach($fields as $field) {
             if( $field->field_key == '25d7z' ) {
-                var_dump( $field );
+                // var_dump( $field );
             }
             if( $field->field_key == '4tpwh' ) {
-                var_dump( $field );
+                // var_dump( $field );
             }
         }
         add_filter( 'frm_date_field_options', 'add_blackout_dates', 30, 2 );
