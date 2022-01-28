@@ -51,7 +51,7 @@ function tdp_pods( $atts ) {
 
         $tdp_name_template = "<h3 class='tdp-detailer__name tdp-detailer__name--$tdp_id'>$tdp_name</h3>";
 
-        $tdp_instagram_template = "<div class='tdp-detailer__instagram tdp-detailer__instagram--$tdp_id'><img class='tdp-detailer__icon tdp-detailer__icon--instagram' src='$tdp_instagram_image'> @$tdp_instagram</div>";
+        $tdp_instagram_template = "<a class='tdp-detailer__instagram tdp-detailer__instagram--$tdp_id' href='https://www.instagram.com/$tdp_instagram' target='blank' ><img class='tdp-detailer__icon tdp-detailer__icon--instagram' src='$tdp_instagram_image'> @$tdp_instagram</a>";
 
         $tdp_instagram_mobile = "<div class='tdp-detailer__instagram-mobile tdp-detailer__instagram-mobile--$tdp_id'><a class='tdp-detailer__instagram-link tdp-detailer__instagram-link--$tdp_id' href='https://www.instagram.com/$tdp_instagram'>View Instagram</a></div>";
 
@@ -108,6 +108,7 @@ function choose_detailers( $atts ) {
         $tdp_name = $tdp_detailers->display( 'post_title' );
         $tdp_name_sanitized = esc_attr($tdp_name);
         $tdp_id = $tdp_detailers->display( 'ID' );
+        $tdp_id_sanitized = $tdp_id;
         $tdp_instagram = $tdp_detailers->display( 'instagram' );
         $tdp_instagram_image = get_stylesheet_directory_uri() . '/images/instagram-icon.png';
         $tdp_image = get_the_post_thumbnail( $tdp_id );
@@ -125,9 +126,9 @@ function choose_detailers( $atts ) {
 
         $tdp_name_template = "<h3 class='tdp-detailer__name tdp-detailer__name--$tdp_id'>$tdp_name</h3>";
 
-        $tdp_instagram_template = "<div class='tdp-detailer__instagram tdp-detailer__instagram--$tdp_id'><img class='tdp-detailer__icon tdp-detailer__icon--instagram' src='$tdp_instagram_image'> @$tdp_instagram</div>";
+        $tdp_instagram_template = "<a href='https://www.instagram.com/$tdp_instagram' target='blank' class='tdp-detailer__instagram tdp-detailer__instagram--$tdp_id'><img class='tdp-detailer__icon tdp-detailer__icon--instagram' src='$tdp_instagram_image'> @$tdp_instagram</a>";
 
-        $tdp_select_detailer = "<div class='tdp-detailer__select-detailer tdp-detailer__select-detailer--$tdp_id'><a class='tdp-detailer__select-detailer-link tdp-detailer__select-detailer-link--$tdp_id' href='$detailer_permalink?$tdp_queries&tdp_detailer=$tdp_name_sanitized'>Select Detailer</a></div>";
+        $tdp_select_detailer = "<div class='tdp-detailer__select-detailer tdp-detailer__select-detailer--$tdp_id'><a class='tdp-detailer__select-detailer-link tdp-detailer__select-detailer-link--$tdp_id et_pb_button et_pb_button--bold' href='$detailer_permalink?$tdp_queries&tdp_detailer=$tdp_name_sanitized&tdp_detailer_id=$tdp_id'>Select Detailer</a></div>";
 
         $tdp_experience_template = "<div class='tdp-detailer__experience tdp-detailer__experience--$tdp_id'>
             <h4>Experience</h4>

@@ -58,6 +58,10 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
 	margin-bottom: 1rem;
 }
 
+.tdp-detailer__excerpt {
+	flex: 1;
+}
+
 .tdp-detailer__excerpt h4,
 .tdp-detailer__experience h4 {
 	color: #fff;
@@ -120,4 +124,11 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
 .tdp-detailer--light p,
 .tdp-detailer--light .tdp-detailer__instagram {
 	color: rgb(15 14 14 / 48%);
+}
+
+.tdp-detailer__select-detailer-link {
+	display: block;
+	width: 100%;
+	text-align: center;
+	margin-top: 24px;
 }
