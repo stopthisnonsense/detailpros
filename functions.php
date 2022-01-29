@@ -180,23 +180,24 @@ function date_picker_filter($params, $fields, $form ) {
             $tdp_detailer = pods( 'detailer', $_GET['tdp_detailer'] );
 
             $tdp_detail_params = [
-                'days' => ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'],
+                'days' => ['sunday','monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'],
                 'items_to_iterate' => [ 'start_time', 'end_time' ]
             ];
 
             $tdp_detailer_availability= [];
+            $constructor_id = 0;
             foreach( $tdp_detail_params['days'] as $day ) {
-                if( $tdp_detailer->display( $day . '_availability' ) == 'Available'  ) {
+
                     $tdp_start_time = $tdp_detailer->display( $day . '_start_time' );
                     $tdp_end_time = $tdp_detailer->display( $day . '_end_time' );
                     $time_constructor = [
+                        'id' => $constructor_id++,
                         'day' => $day,
+                        'availability' => $tdp_detailer->display( $day . '_availability' ),
                         'start_time' => $tdp_start_time,
                         'end_time' => $tdp_end_time,
                     ];
                     $constructed_availability[] = $time_constructor;
-                }
-
             }
             // var_dump( $constructed_availability );
 
@@ -209,12 +210,33 @@ function date_picker_filter($params, $fields, $form ) {
                 // var_dump( $field );
             }
         }
-        add_filter( 'frm_date_field_options', 'add_blackout_dates', 30, 2 );
+        // add_filter( 'frm_date_field_options', 'add_blackout_dates', 30, 2 );
 
-        function add_blackout_dates( $js_options, $fields ) {
+        function add_blackout_dates( $selectable, $args ) {
+
+            if( $args['field']->field_key  == '4tpwh' ) {
+                $selectable = '( ';
+                foreach( $constructed_availability as $available ) {
+
+                    if( $available['available'] != 'Available' ) {
+                        $available_id = $available['id'];
+                        $selectable .= "day != $available_id";
+                    }
+                }
+                $selectable .= ' )';
+                // var_dump( $selectable );
+            }
+
+            return $selectable;
+        }
 
 
-            return $js_options;
+
+        function frm_black_out_weekends( $selectable, $args ) {
+            if ( $args['field']->field_key == 'pcm7rl3' ) { //replace pcm7rl3 with your field key
+                $selectable = '(day != 0 && day != 6)'; //where 0 & 6 are the days of the week
+            }
+            return $selectable;
         }
     }
 }
